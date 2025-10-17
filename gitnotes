@@ -1,0 +1,238 @@
+🧠 Git Complete Notes for DevOps Students
+🔹 1. Introduction to Git
+What is Git?
+
+Git is a distributed version control system (VCS) used to track changes in code, collaborate with teams, and manage project versions efficiently.
+
+It allows multiple developers to:
+
+Work on the same project simultaneously.
+
+Keep a history of every change.
+
+Revert to previous versions if something breaks.
+
+Manage multiple development lines using branches.
+
+🔹 2. Why DevOps Engineers Need Git
+Purpose	Explanation
+Version Control	Keep track of code history and rollback when needed.
+Collaboration	Enables parallel development across teams.
+CI/CD Integration	Works with Jenkins, GitHub Actions, or Azure DevOps for automated pipelines.
+Infrastructure as Code (IaC)	Manages scripts and YAML configurations for Terraform, Ansible, and Kubernetes.
+Release Management	Helps manage production, staging, and test environments using branches.
+🔹 3. Git Architecture
+
+Git follows a four-tier architecture:
+
+Working Directory → Staging Area → Local Repository → Remote Repository
+
+Layer	Description	Command Example
+Working Directory	Your local project files	git status, git add
+Staging Area (Index)	Temporary area before committing changes	git add .
+Local Repository	Your local version history (commits)	git commit -m "message"
+Remote Repository	Shared repository (e.g., GitHub, GitLab, Bitbucket)	git push origin main
+🔹 4. Git Workflow (Local to Remote)
+
+Create or Clone Repo
+
+git init
+git clone https://github.com/user/repo.git
+
+
+Make Changes in Code
+
+touch index.html
+git status
+
+
+Add to Staging
+
+git add index.html
+git add .
+
+
+Commit Changes
+
+git commit -m "Added homepage"
+
+
+Push to Remote
+
+git push origin main
+
+
+Pull Latest Changes
+
+git pull origin main
+
+🔹 5. Git Branching Strategy for DevOps
+✅ Git Flow Model (Standard in CI/CD environments)
+main
+│
+├── develop
+│   ├── feature/login
+│   ├── feature/payment
+│   └── bugfix/ui
+│
+├── release/1.0
+└── hotfix/critical-bug
+
+Branch Roles
+Branch	Purpose
+main/master	Production-ready code. Always stable.
+develop	Integration branch. Used for staging or pre-production.
+feature/*	For developing new features or bug fixes.
+release/*	For preparing production deployment.
+hotfix/*	For urgent fixes directly on production.
+Example Workflow
+
+Create a feature branch from develop:
+
+git checkout -b feature/login develop
+
+
+After development:
+
+git add .
+git commit -m "Added login feature"
+git push origin feature/login
+
+
+Merge feature → develop:
+
+git checkout develop
+git merge feature/login
+git push origin develop
+
+
+Create release branch from develop:
+
+git checkout -b release/v1.0 develop
+
+
+Merge release → main & develop after testing:
+
+git checkout main
+git merge release/v1.0
+git push origin main
+
+🔹 6. Important Git Commands (with Examples)
+🧩 Configuration
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --list
+
+📂 Repository Initialization
+git init                       # Create new Git repo
+git clone <repo_url>           # Clone existing repo
+
+🧾 Tracking Changes
+git status                     # View modified files
+git add <file>                 # Add specific file
+git add .                      # Add all changes
+git diff                       # View file differences
+
+💾 Committing Changes
+git commit -m "Commit message"  # Save changes locally
+git commit --amend              # Modify last commit
+
+🌿 Branch Management
+git branch                      # List branches
+git branch <branch_name>         # Create branch
+git checkout <branch_name>       # Switch branch
+git checkout -b <branch_name>    # Create & switch
+git merge <branch_name>          # Merge branches
+git branch -d <branch_name>      # Delete branch
+
+🔄 Synchronization
+git fetch                        # Download changes (no merge)
+git pull                         # Download + merge changes
+git push origin <branch_name>    # Push branch to remote
+git remote -v                    # Show remote URLs
+
+🔙 Undo / Revert
+git reset --hard HEAD~1          # Undo last commit
+git revert <commit_id>           # Revert specific commit
+git checkout <file>              # Discard file changes
+
+🧱 Merging & Conflict Resolution
+git merge <branch>               # Merge branch
+# If conflict:
+# Edit conflicting files
+git add <file>
+git commit
+
+🔍 Log & History
+git log                          # Show commit history
+git log --oneline --graph --all  # Pretty log
+
+🔹 7. Advanced Git Commands for DevOps
+Command	Description
+git stash	Temporarily save uncommitted changes
+git stash pop	Reapply stashed changes
+git rebase <branch>	Reapply commits on top of another base tip
+git cherry-pick <commit_id>	Apply a specific commit to current branch
+git tag <tag_name>	Mark a specific commit (used for releases)
+git show <commit_id>	Show details of a commit
+git blame <file>	Show who changed each line
+git shortlog -sn	View contributors’ summary
+git reflog	Show history of HEAD (useful for recovery)
+🔹 8. Git Merge vs Rebase (Key Difference)
+Feature	git merge	git rebase
+Purpose	Combines branches	Rewrites history
+Commit History	Preserves history	Creates linear history
+Use Case	For shared branches	For private branches
+Command Example	git merge develop	git rebase develop
+🔹 9. Comparing and Restoring in Git
+Action	Command	Description
+Compare branches	git diff branch1 branch2	View differences
+Compare commits	git diff commit1 commit2	Compare two commits
+Previous commit	git checkout <commit_id>	Move to previous version
+Return to latest	git checkout main	Go back to main
+🔹 10. Git Integration in DevOps Tools
+Tool	Integration
+Jenkins	Uses Git plugin to trigger pipelines when new commits are pushed.
+Docker	Version control Dockerfiles and Compose scripts.
+Kubernetes	Store YAML manifests for deployments.
+Terraform	Manage infrastructure code in Git for reproducibility.
+Ansible Tower / AWX	Pulls playbooks from Git repos for automation.
+🔹 11. Real-World CI/CD Example
+
+Scenario:
+You’re building a CI/CD pipeline in Jenkins for a Node.js app.
+
+Steps:
+
+Developers push code → develop branch.
+
+Jenkins triggers on push (git pull origin develop).
+
+Build → Test → Deploy to staging.
+
+Once validated, code merged to main → production deployment triggered automatically.
+
+🔹 12. Common Git Issues and Fixes
+Problem	Command / Fix
+Merge conflict	Resolve manually → git add . → git commit
+Wrong commit message	git commit --amend
+Lost commit	git reflog → find commit → git checkout <commit>
+Push rejected	git pull --rebase origin <branch> then push
+Undo last commit	git reset --hard HEAD~1
+✅ Summary Cheat Sheet
+Action	Command
+Initialize repo	git init
+Clone repo	git clone <url>
+Add changes	git add .
+Commit	git commit -m "msg"
+Push	git push origin main
+Pull	git pull
+Create branch	git checkout -b feature1
+Merge branch	git merge feature1
+Delete branch	git branch -d feature1
+Stash changes	git stash
+Rebase	git rebase develop
+Tag release	git tag v1.0
+View log	git log --oneline
+
+Would you like me to create this as a ready-to-print PDF or Excel sheet (with command, example, and purpose columns) for quick DevOps interview revision?
